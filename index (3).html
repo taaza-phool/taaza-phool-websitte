@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taaza Phool – Fresh Flowers & Garlands, Delivered Across Hyderabad</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2a7a2a;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --gold: #e6a800;
+    --gold-light: #fff3c4;
+    --cream: #fdfaf3;
+    --dark: #1a1a1a;
+    --text: #3a3a3a;
+    --muted: #777;
+    --whatsapp: #25d366;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(253,250,243,0.97); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(42,122,42,0.12);
+    padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 68px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+  .nav-logo img { height: 48px; width: 48px; object-fit: contain; }
+  .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--green); line-height: 1; }
+  .nav-logo-text span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; cursor: pointer; }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--whatsapp); color: white; border: none; border-radius: 50px;
+    padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+    cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 7px; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: #1ebe57; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--green); border-radius: 2px; }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; padding-top: 68px; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    min-height: calc(100vh - 68px);
+    background: radial-gradient(ellipse at 80% 20%, rgba(230,168,0,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 10% 80%, rgba(82,183,136,0.13) 0%, transparent 50%), var(--cream);
+    display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-content { max-width: 580px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-pale); color: var(--green);
+    border-radius: 50px; padding: 6px 16px; font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.04em; margin-bottom: 1.5rem;
+  }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 5.5vw, 4.2rem); line-height: 1.1; color: var(--dark); margin-bottom: 1.2rem; }
+  .hero h1 em { color: var(--green); font-style: italic; }
+  .hero p { font-size: 1.05rem; line-height: 1.8; color: var(--muted); margin-bottom: 2rem; max-width: 460px; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: white; border: none; border-radius: 50px;
+    padding: 14px 30px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500;
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #1e5a1e; transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--green); border: 1.5px solid var(--green);
+    border-radius: 50px; padding: 14px 30px; font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--green); color: white; }
+  .hero-floats { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 300px; }
+  .float-card {
+    background: white; border-radius: 18px; padding: 18px; box-shadow: 0 4px 20px rgba(42,122,42,0.1);
+    text-align: center; animation: floatUp 3s ease-in-out infinite alternate; cursor: pointer; transition: box-shadow 0.2s;
+  }
+  .float-card:hover { box-shadow: 0 6px 28px rgba(42,122,42,0.2); }
+  .float-card:nth-child(2) { animation-delay: 0.5s; }
+  .float-card:nth-child(3) { animation-delay: 1s; }
+  .float-card:nth-child(4) { animation-delay: 1.5s; }
+  .float-card .icon { font-size: 1.9rem; margin-bottom: 7px; }
+  .float-card p { font-size: 0.76rem; color: var(--muted); font-weight: 500; }
+  @keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+  /* BANNER */
+  .daily-banner {
+    background: linear-gradient(135deg, var(--green) 0%, #1a5a1a 100%);
+    color: white; padding: 20px 5%; display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; text-align: center;
+  }
+  .daily-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; }
+  .daily-banner p { font-size: 0.88rem; opacity: 0.85; }
+  .daily-banner a { background: white; color: var(--green); border-radius: 50px; padding: 10px 22px; font-weight: 600; text-decoration: none; font-size: 0.88rem; }
+
+  /* SECTIONS */
+  section { padding: 72px 5%; }
+  .section-label { display: inline-block; color: var(--green); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--dark); margin-bottom: 0.9rem; line-height: 1.2; }
+  .section-sub { color: var(--muted); font-size: 0.98rem; line-height: 1.7; max-width: 500px; }
+  .section-head { text-align: center; margin-bottom: 3rem; }
+  .section-head .section-sub { margin: 0 auto; }
+
+  /* MOST ORDERED */
+  .most-ordered-section { background: white; padding: 72px 5%; }
+  .most-ordered-scroll-wrap { overflow-x: auto; padding-bottom: 12px; }
+  .most-ordered-scroll-wrap::-webkit-scrollbar { height: 4px; }
+  .most-ordered-scroll-wrap::-webkit-scrollbar-track { background: var(--green-pale); border-radius: 4px; }
+  .most-ordered-scroll-wrap::-webkit-scrollbar-thumb { background: var(--green-light); border-radius: 4px; }
+  .most-ordered-grid {
+    display: flex; gap: 16px; width: max-content; padding: 4px 2px 8px;
+  }
+  .mo-card {
+    width: 180px; background: var(--cream); border-radius: 20px;
+    border: 1px solid rgba(42,122,42,0.1); padding: 20px 16px 16px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    cursor: pointer; transition: transform 0.22s, box-shadow 0.22s; position: relative; flex-shrink: 0;
+  }
+  .mo-card:hover { transform: translateY(-5px); box-shadow: 0 10px 26px rgba(42,122,42,0.13); }
+  .mo-badge {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    color: white; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+    padding: 3px 12px; border-radius: 50px; white-space: nowrap;
+  }
+  .mo-icon { font-size: 2.6rem; margin: 8px 0 10px; }
+  .mo-name { font-size: 0.88rem; font-weight: 600; color: var(--dark); margin-bottom: 5px; }
+  .mo-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+  .mo-order-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--whatsapp); color: white; border: none; border-radius: 50px;
+    padding: 7px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem;
+    font-weight: 600; cursor: pointer; text-decoration: none; width: 100%; justify-content: center;
+    transition: background 0.2s;
+  }
+  .mo-order-btn:hover { background: #1ebe57; }
+
+  /* SERVICES GRID */
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.4rem; }
+  .service-card {
+    background: white; border-radius: 20px; padding: 26px 22px;
+    border: 1px solid rgba(42,122,42,0.08); transition: transform 0.25s, box-shadow 0.25s; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--green-light), var(--gold));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(42,122,42,0.12); }
+  .service-icon { font-size: 2.2rem; margin-bottom: 12px; }
+  .service-card h3 { font-size: 1rem; font-weight: 600; color: var(--dark); margin-bottom: 7px; }
+  .service-card p { font-size: 0.86rem; color: var(--muted); line-height: 1.6; }
+  .service-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; flex-wrap: wrap; gap: 8px; }
+  .service-tag { display: inline-block; background: var(--green-pale); color: var(--green); border-radius: 50px; padding: 4px 12px; font-size: 0.73rem; font-weight: 500; }
+  .view-gallery-btn {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--green);
+    font-weight: 600; border: 1px solid var(--green); border-radius: 50px; padding: 5px 12px;
+    cursor: pointer; background: transparent; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .view-gallery-btn:hover { background: var(--green); color: white; }
+  .order-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--whatsapp); color: white; border: none; border-radius: 50px; padding: 7px 15px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background 0.2s;
+  }
+  .order-btn:hover { background: #1ebe57; }
+
+  /* SUB STEPS (inside delivery) */
+  .sub-steps { display: flex; flex-direction: column; gap: 14px; margin-top: 1.6rem; }
+  .sub-step { display: flex; align-items: flex-start; gap: 14px; }
+  .sub-num {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: white;
+    font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  }
+  .sub-step strong { font-size: 0.92rem; color: var(--dark); display: block; margin-bottom: 3px; }
+  .sub-step p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin: 0; }
+  /* TRUST PILLS */
+  .trust-pills { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .trust-pill {
+    background: white; border-radius: 50px; padding: 9px 18px;
+    font-size: 0.84rem; font-weight: 600; color: var(--green);
+    border: 1.5px solid var(--green-pale); text-align: center;
+  }
+
+  /* HOW */
+  .how-bg { background: white; }
+  .steps { display: flex; justify-content: center; flex-wrap: wrap; position: relative; }
+  .steps::before { content: ''; position: absolute; top: 36px; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, var(--green-pale), var(--gold-light), var(--green-pale)); }
+  .step { text-align: center; flex: 1; min-width: 150px; max-width: 200px; padding: 0 10px; }
+  .step-num {
+    width: 70px; height: 70px; border-radius: 50%; background: var(--green-pale); color: var(--green);
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;
+    border: 3px solid white; box-shadow: 0 4px 14px rgba(42,122,42,0.15);
+  }
+  .step h4 { font-size: 0.92rem; font-weight: 600; margin-bottom: 5px; color: var(--dark); }
+  .step p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* DELIVERY */
+  .delivery-flex { display: flex; gap: 4rem; align-items: center; flex-wrap: wrap; }
+  .delivery-text { flex: 1; min-width: 280px; }
+  .delivery-text h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--dark); margin-bottom: 1rem; }
+  .delivery-text p { color: var(--muted); font-size: 0.98rem; line-height: 1.8; margin-bottom: 1.5rem; }
+  .delivery-perks { display: flex; flex-direction: column; gap: 11px; }
+  .perk { display: flex; align-items: flex-start; gap: 11px; }
+  .perk-dot { width: 26px; height: 26px; border-radius: 50%; background: var(--green-pale); color: var(--green); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .perk p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+  .delivery-visual { flex: 1; min-width: 260px; background: linear-gradient(135deg, var(--green-pale) 0%, var(--gold-light) 100%); border-radius: 22px; padding: 36px 28px; text-align: center; }
+  .delivery-visual .big-icon { font-size: 4.5rem; margin-bottom: 18px; display: block; }
+  .delivery-visual h4 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--green); margin-bottom: 7px; }
+  .delivery-visual p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+  /* ORDER */
+  .order-bg { background: linear-gradient(135deg, #0e3b0e 0%, #1a5a1a 100%); color: white; }
+  .order-bg .section-title { color: white; }
+  .order-bg .section-sub { color: rgba(255,255,255,0.7); }
+  .order-bg .section-label { color: var(--green-light); }
+  .order-card-wrap { display: flex; gap: 1.8rem; flex-wrap: wrap; justify-content: center; }
+  .order-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 26px 22px; max-width: 300px; flex: 1; }
+  .order-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 7px; }
+  .order-card p { font-size: 0.86rem; line-height: 1.7; opacity: 0.75; margin-bottom: 18px; }
+  .wa-big {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--whatsapp); color: white; border: none; border-radius: 50px;
+    padding: 13px 24px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; width: 100%; transition: background 0.2s, transform 0.15s;
+  }
+  .wa-big:hover { transform: translateY(-2px); opacity: 0.9; }
+
+  /* FOOTER */
+  footer { background: var(--dark); color: rgba(255,255,255,0.7); padding: 40px 5% 22px; display: flex; flex-direction: column; gap: 26px; }
+  .footer-top { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: space-between; }
+  .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .footer-logo img { height: 42px; width: 42px; object-fit: contain; }
+  .footer-logo span { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: white; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 230px; }
+  .footer-col h4 { color: white; font-weight: 600; font-size: 0.88rem; margin-bottom: 11px; letter-spacing: 0.04em; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .footer-col ul li { font-size: 0.83rem; }
+  .footer-col ul li a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .footer-col ul li a:hover { color: var(--green-light); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; text-align: center; font-size: 0.78rem; opacity: 0.45; }
+
+  /* WA FLOAT */
+  .wa-float {
+    position: fixed; bottom: 26px; right: 26px; z-index: 200;
+    width: 58px; height: 58px; border-radius: 50%; background: var(--whatsapp);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 18px rgba(37,211,102,0.4); text-decoration: none;
+    animation: pulse 2.5s ease-in-out infinite; transition: transform 0.2s;
+  }
+  .wa-float:hover { transform: scale(1.1); }
+  .wa-float svg { width: 30px; height: 30px; fill: white; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 4px 18px rgba(37,211,102,0.4); } 50% { box-shadow: 0 4px 28px rgba(37,211,102,0.65); } }
+
+  /* GALLERY */
+  .gallery-page { padding: 28px 5% 60px; }
+  .gallery-back {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    color: var(--green); font-weight: 600; font-size: 0.92rem; margin-bottom: 28px;
+    border: none; background: none; font-family: 'DM Sans', sans-serif; padding: 0; transition: gap 0.2s;
+  }
+  .gallery-back:hover { gap: 12px; }
+  .gallery-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+  .gallery-header-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); color: var(--dark); }
+  .gallery-header-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-top: 6px; max-width: 500px; }
+  .gallery-order-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--whatsapp); color: white; border: none; border-radius: 50px;
+    padding: 13px 26px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; white-space: nowrap; transition: background 0.2s, transform 0.15s;
+  }
+  .gallery-order-btn:hover { background: #1ebe57; transform: translateY(-2px); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .gallery-slot {
+    aspect-ratio: 1; border-radius: 16px; overflow: hidden;
+    background: linear-gradient(135deg, var(--green-pale), var(--gold-light));
+    border: 2px dashed rgba(42,122,42,0.25);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s; position: relative;
+  }
+  .gallery-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gallery-slot.empty { cursor: default; }
+  .gallery-slot.empty .slot-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .gallery-slot.empty .slot-label { font-size: 0.76rem; color: var(--muted); font-weight: 500; text-align: center; padding: 0 12px; line-height: 1.5; }
+  .gallery-slot:not(.empty):hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .slot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.42); display: flex; align-items: flex-end; padding: 12px; opacity: 0; transition: opacity 0.2s; }
+  .gallery-slot:hover .slot-overlay { opacity: 1; }
+  .slot-overlay span { color: white; font-size: 0.8rem; font-weight: 500; }
+  .gallery-note { margin-top: 2rem; padding: 16px 20px; background: var(--gold-light); border-radius: 12px; border-left: 4px solid var(--gold); font-size: 0.87rem; color: var(--text); line-height: 1.6; }
+  .gallery-note strong { color: var(--green); }
+
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero-floats { display: none; }
+    .steps::before { display: none; }
+    .delivery-flex { flex-direction: column; }
+    .footer-top { flex-direction: column; gap: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <img src="logo.png" alt="Taaza Phool Logo">
+    <div class="nav-logo-text">Taaza <span>Phool</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="goHome('services-section')">Services</a></li>
+    <li><a onclick="goHome('delivery')">Daily Delivery</a></li>
+    <li><a onclick="goHome('how')">How to Order</a></li>
+    <li><a onclick="goHome('order')">Contact</a></li>
+  </ul>
+  <a href="https://wa.me/919390988981?text=Hi%20Taaza%20Phool!%20I'd%20like%20to%20place%20an%20order." target="_blank" class="nav-cta">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Order on WhatsApp
+  </a>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ══ HOME PAGE ══ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🌼 Fresh Every Morning · Hyderabad</div>
+      <h1>Fresh Flowers<br>& <em>Garlands,</em><br>Delivered Across Hyderabad</h1>
+      <p>From wedding garlands to Poola Jadas, birthday decor to daily pooja flowers — Taaza Phool brings nature's best to your doorstep across Hyderabad.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/919390988981?text=Hi%20Taaza%20Phool!%20I'd%20like%20to%20place%20an%20order." target="_blank" class="btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Order Now
+        </a>
+        <button class="btn-outline" onclick="document.getElementById('services-section').scrollIntoView({behavior:'smooth'})">See All Services</button>
+      </div>
+    </div>
+    <div class="hero-floats">
+      <div class="float-card" onclick="openGallery('garlands')"><div class="icon">💐</div><p>Garlands</p></div>
+      <div class="float-card" onclick="openGallery('loose-flowers')"><div class="icon">🌸</div><p>Loose Flowers</p></div>
+      <div class="float-card" onclick="openGallery('house-deco')"><div class="icon">🏠</div><p>House Decoration</p></div>
+      <div class="float-card" onclick="openGallery('buds-maala')"><div class="icon">💆‍♀️</div><p>Bud's Maala</p></div>
+    </div>
+  </section>
+
+  <div class="daily-banner">
+    <div><h3>🌺 Daily Flower Subscription — Flowers First, Pay Later!</h3><p>We deliver for a full week first. Happy? Then pay. No advance, no risk. 🙌</p></div>
+    <a href="https://wa.me/919390988981?text=Hi!%20I%20want%20to%20try%20the%20daily%20flower%20subscription%20-%20flowers%20first%2C%20pay%20after%20a%20week." target="_blank">Try Free This Week</a>
+  </div>
+
+  <section class="most-ordered-section" id="most-ordered">
+    <div class="section-head">
+      <span class="section-label">Customer Favourites</span>
+      <h2 class="section-title">Most Ordered 🔥</h2>
+      <p class="section-sub">These are what our customers love most — order in one tap!</p>
+    </div>
+    <div class="most-ordered-scroll-wrap">
+      <div class="most-ordered-grid" id="most-ordered-grid"></div>
+    </div>
+  </section>
+
+  <section id="services-section">
+    <div class="section-head">
+      <span class="section-label">What We Offer</span>
+      <h2 class="section-title">All Things Flowers</h2>
+      <p class="section-sub">From traditional to trendy — click any service to see photos and order!</p>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </section>
+
+  <section class="how-bg" id="how">
+    <div class="section-head">
+      <span class="section-label">Simple & Easy</span>
+      <h2 class="section-title">How to Order</h2>
+      <p class="section-sub">Place your order in 3 simple steps directly on WhatsApp!</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h4>Pick a Service</h4><p>Browse our services and tap the one you need.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Chat on WhatsApp</h4><p>Tell us the occasion, quantity, date & requirements.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>We Deliver Fresh</h4><p>Flowers are prepared fresh and delivered to your door!</p></div>
+    </div>
+  </section>
+
+  <section id="delivery">
+    <div class="delivery-flex">
+      <div class="delivery-text">
+        <span class="section-label">Daily Subscription</span>
+        <h2>Flowers First,<br>Pay After a Week 🤝</h2>
+        <p>We believe in trust — so we deliver fresh flowers to your door every morning for a full week. If you're happy, you pay at the end of the week. Simple, fair, and zero risk for you.</p>
+        <div class="delivery-perks">
+          <div class="perk"><div class="perk-dot">🌸</div><p>We deliver first — you pay only after 7 days of delivery</p></div>
+          <div class="perk"><div class="perk-dot">🏘️</div><p>Houses, apartments & entire societies across Hyderabad</p></div>
+          <div class="perk"><div class="perk-dot">⏰</div><p>Early morning delivery — ready before your pooja every day</p></div>
+          <div class="perk"><div class="perk-dot">🔄</div><p>Weekly payment cycle — renew, pause or stop anytime on WhatsApp</p></div>
+          <div class="perk"><div class="perk-dot">💬</div><p>Choose your flowers — garlands, loose flowers, poola jadas & more</p></div>
+        </div>
+
+        <!-- HOW IT WORKS INLINE -->
+        <div class="sub-steps">
+          <div class="sub-step"><div class="sub-num">1</div><div><strong>Start Today</strong><p>Message us on WhatsApp — tell us what flowers you want & your address.</p></div></div>
+          <div class="sub-step"><div class="sub-num">2</div><div><strong>7 Days of Fresh Flowers</strong><p>We deliver every morning for a week. No payment needed upfront.</p></div></div>
+          <div class="sub-step"><div class="sub-num">3</div><div><strong>Pay at Week End</strong><p>Loved it? Pay for the week and we continue. Not happy? No charges, no questions.</p></div></div>
+        </div>
+
+        <a href="https://wa.me/919390988981?text=Hi!%20I%20want%20to%20try%20the%20daily%20flower%20subscription%20-%20flowers%20first%2C%20pay%20after%20a%20week." target="_blank" class="btn-primary" style="margin-top:1.8rem;display:inline-flex;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Start Free This Week
+        </a>
+      </div>
+      <div class="delivery-visual">
+        <span class="big-icon">🤝</span>
+        <h4>Zero Risk for You</h4>
+        <p style="margin-bottom:16px;">We deliver flowers to your door for 7 days first — you only pay after you're satisfied.</p>
+        <div class="trust-pills">
+          <span class="trust-pill">✅ No Advance Payment</span>
+          <span class="trust-pill">✅ First Flowers, Then Pay</span>
+          <span class="trust-pill">✅ Weekly Billing</span>
+          <span class="trust-pill">✅ Cancel Anytime</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="order-bg" id="order">
+    <div class="section-head">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Ready to Order?</h2>
+      <p class="section-sub">Reach us on WhatsApp or find us on the map!</p>
+    </div>
+    <div class="order-card-wrap">
+      <div class="order-card">
+        <h3>💐 Place an Order</h3>
+        <p>Garlands, decorations, loose flowers or anything custom — we're quick to respond.</p>
+        <a href="https://wa.me/919390988981?text=Hi%20Taaza%20Phool!%20I'd%20like%20to%20place%20an%20order." target="_blank" class="wa-big">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+      <div class="order-card">
+        <h3>📍 Find Us</h3>
+        <p>We're in Hyderabad. Tap below to open our location on Google Maps.</p>
+        <a href="https://share.google/Hsee0jBGn6gv9FNMM" target="_blank" class="wa-big" style="background:#4285f4;">
+          📍 &nbsp;Open in Google Maps
+        </a>
+      </div>
+      <div class="order-card">
+        <h3>🌺 Flowers First, Pay Later</h3>
+        <p>We deliver for a full week — you pay only after you're satisfied. Start your free week today!</p>
+        <a href="https://wa.me/919390988981?text=Hi!%20I%20want%20to%20try%20the%20daily%20flower%20subscription%20-%20flowers%20first%2C%20pay%20after%20a%20week." target="_blank" class="wa-big">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Start Free This Week
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="logo.png" alt="Taaza Phool"><span>Taaza Phool</span></div>
+        <p>Fresh flowers for every occasion — delivered with love across Hyderabad.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a onclick="openGallery('garlands')">Garlands</a></li>
+          <li><a onclick="openGallery('loose-flowers')">Loose Flowers</a></li>
+          <li><a onclick="openGallery('bouquet')">Bouquets</a></li>
+          <li><a onclick="openGallery('house-deco')">House Decorations</a></li>
+          <li><a onclick="openGallery('haldi-deco')">Haldi Decorations</a></li>
+          <li><a onclick="openGallery('birthday-deco')">Birthday Decorations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More Services</h4>
+        <ul>
+          <li><a onclick="openGallery('event-deco')">Event Decorations</a></li>
+          <li><a onclick="openGallery('pooja-jadas')">Poola Jadas</a></li>
+          <li><a onclick="openGallery('buds-maala')">Bud's Maala (Hair)</a></li>
+          <li><a onclick="openGallery('car-deco')">Car Decorations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://wa.me/919390988981" target="_blank">WhatsApp: +91 93909 88981</a></li>
+          <li><a href="https://share.google/Hsee0jBGn6gv9FNMM" target="_blank">Our Location</a></li>
+          <li><a href="https://wa.me/919390988981?text=Daily%20flower%20delivery" target="_blank">Daily Delivery</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2025 Taaza Phool · Hyderabad · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- ══ GALLERY PAGE ══ -->
+<div id="page-gallery" class="page">
+  <div class="gallery-page">
+    <button class="gallery-back" onclick="showPage('home')">← Back to Services</button>
+    <div class="gallery-header">
+      <div class="gallery-header-text">
+        <h1 id="gallery-title"></h1>
+        <p id="gallery-desc"></p>
+      </div>
+      <a id="gallery-wa-btn" href="#" target="_blank" class="gallery-order-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Order This on WhatsApp
+      </a>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+    <div class="gallery-note" id="gallery-note">
+      <strong>📸 How to add your photos:</strong> In the HTML file, find the <code>images</code> array for this service inside the <code>services</code> object in the JavaScript. Replace each entry with your actual image filename (e.g. <code>"images/garland-1.jpg"</code>). Put your photos in an <code>images/</code> folder next to <code>index.html</code>.
+    </div>
+  </div>
+</div>
+
+<a href="https://wa.me/919390988981?text=Hi%20Taaza%20Phool!%20I'd%20like%20to%20place%20an%20order." target="_blank" class="wa-float">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const WA = '919390988981';
+
+// ── SERVICE DATA ──
+// For each service, 'images' array = your photo filenames.
+// Replace null with a filename string like "images/garland-1.jpg"
+const services = {
+  garlands: {
+    title: 'Garlands', icon: '💐',
+    desc: 'Wedding varmala, welcome garlands, pooja malas, surprise garlands — all kinds crafted fresh daily.',
+    tag: 'Weddings · Poojas · Surprises', msg: 'Hi! I need garlands.',
+    slots: ['Wedding Varmala','Pooja Mala','Welcome Garland','Surprise Garland','Rose Garland','Marigold Garland','Mixed Flower Garland','Jasmine Garland','Rose + Jasmine','Tuberose Garland','Custom Garland','Special Event Garland'],
+    images: [null,null,null,null,null,null,null,null,null,null,null,null]
+  },
+  'loose-flowers': {
+    title: 'Loose Flowers', icon: '🌸',
+    desc: 'All types of fresh cut flowers — roses, jasmine, marigold, chrysanthemum & more by weight or bunch.',
+    tag: 'All Varieties', msg: 'Hi! I need loose flowers.',
+    slots: ['Rose Bunch','Jasmine (Moghra)','Marigold','Chrysanthemum','Tuberose','Lotus','Crossandra','Gerbera','Seasonal Flowers'],
+    images: [null,null,null,null,null,null,null,null,null]
+  },
+  'house-deco': {
+    title: 'House Decorations', icon: '🏠',
+    desc: 'Transform your home with beautiful floral arrangements for festivals, functions or daily beauty.',
+    tag: 'Customizable', msg: 'Hi! I need house decoration with flowers.',
+    slots: ['Entrance Decor','Living Room Setup','Pooja Room Decor','Festival Setup','Doorway Hanging','Floral Rangoli','Table Centrepiece','Balcony Decor','Full Home Decor'],
+    images: [null,null,null,null,null,null,null,null,null]
+  },
+  'haldi-deco': {
+    title: 'Haldi Decorations', icon: '💛',
+    desc: 'Vibrant yellow & marigold floral setups perfect for Haldi ceremonies — pillars, backdrops & more.',
+    tag: 'Weddings · Haldi Events', msg: 'Hi! I need Haldi decorations.',
+    slots: ['Marigold Backdrop','Flower Pillars','Haldi Stage Decor','Floral Arch','Seating Decor','Haldi Thaali Decor','Entrance Gate','Photo Corner','Full Haldi Setup'],
+    images: [null,null,null,null,null,null,null,null,null]
+  },
+  'birthday-deco': {
+    title: 'Birthday Decorations', icon: '🎈',
+    desc: 'Balloons, flowers, and themed decor combos to make every birthday extra special!',
+    tag: 'Balloons · Flowers · Themes', msg: 'Hi! I need birthday decorations.',
+    slots: ['Balloon Arch','Flower + Balloon Combo','Birthday Backdrop','Table Setup','Photo Booth Corner','Kids Theme Decor','Romantic Birthday','Surprise Room Setup','Full Birthday Package'],
+    images: [null,null,null,null,null,null,null,null,null]
+  },
+  'event-deco': {
+    title: 'Event & Festival Decorations', icon: '🎉',
+    desc: 'Large-scale floral setups for weddings, Ugadi, Diwali, Ganesh Chaturthi and all festivals.',
+    tag: 'Festivals · Events · Functions', msg: 'Hi! I need event/festival decorations.',
+    slots: ['Wedding Stage','Ugadi Decor','Diwali Setup','Ganesh Chaturthi','Naming Ceremony','Engagement Decor','Corporate Event','Festival Gate','Full Event Package'],
+    images: [null,null,null,null,null,null,null,null,null]
+  },
+  'pooja-jadas': {
+    title: 'Poola Jadas', icon: '🛕',
+    desc: 'Specially crafted floral jadas for pooja rituals — fresh and traditionally made every day.',
+    tag: 'Pooja · Religious', msg: 'Hi! I need Poola Jadas.',
+    slots: ['Daily Poola Jada','Special Occasion Jada','Festival Jada','Temple Jada','Flower Diya Setup','Pooja Plate Decor','Flower Garland for God','Custom Pooja Setup'],
+    images: [null,null,null,null,null,null,null,null]
+  },
+  'buds-maala': {
+    title: "Bud's Maala (Hair)", icon: '💆‍♀️',
+    desc: 'Kankamral, Juvi, and Moghra Malas — beautifully strung for hair decoration at weddings, functions & daily use.',
+    tag: 'Kankamral · Juvi · Moghra', msg: "Hi! I need Bud's Maala for hair.",
+    slots: ['Kankamral Maala','Juvi Maala','Moghra Maala','Mixed Bud Maala','Wedding Hair Maala','Daily Hair Flowers','Long Braid Maala','Short Bud Maala'],
+    images: [null,null,null,null,null,null,null,null]
+  },
+  'car-deco': {
+    title: 'Car Decorations', icon: '🚗',
+    desc: 'Wedding car flower decorations, bridal entry vehicles & special occasion cars — done beautifully.',
+    tag: 'Weddings · Special Events', msg: 'Hi! I need car flower decoration.',
+    slots: ['Bridal Car Full','Wedding Car (Simple)','Hood Flower Decor','Door Panel Decor','White Rose Theme','Marigold Theme','Mixed Colour Theme','Custom Car Decor'],
+    images: [null,null,null,null,null,null,null,null]
+  },
+  'daily-delivery': {
+    title: 'Daily Flower Delivery', icon: '🌺',
+    desc: 'Fresh flowers every morning — flowers first, pay after a week. Zero risk subscription.',
+    tag: 'Weekly Pay · No Advance', msg: 'Hi! I want to try the daily flower subscription - flowers first, pay after a week.',
+    slots: ['Morning Garlands','Daily Loose Flowers','Pooja Flowers','Bouquet Subscription','Weekly Pack','Society Bulk Order'],
+    images: [null,null,null,null,null,null]
+  },
+  'bouquet': {
+    title: 'Bouquets', icon: '💝',
+    desc: 'Beautiful hand-crafted bouquets for birthdays, anniversaries, gifting, proposals & all special moments.',
+    tag: 'Gifting · Occasions · Custom',
+    msg: 'Hi! I need a bouquet.',
+    slots: ['Rose Bouquet','Mixed Flower Bouquet','Sunflower Bouquet','Lily Bouquet','White Roses Bouquet','Romantic Red Roses','Anniversary Bouquet','Birthday Bouquet','Pastel Mix Bouquet','Custom Bouquet'],
+    images: [null,null,null,null,null,null,null,null,null,null]
+  }
+};
+
+// ── MOST ORDERED DATA ──
+const mostOrdered = [
+  { rank:1,  icon:'💐', name:'Wedding Varmala',        desc:'Most picked for weddings',      service:'garlands',      msg:'Hi! I need a Wedding Varmala.' },
+  { rank:2,  icon:'🌸', name:'Daily Loose Flowers',    desc:'Fresh morning delivery',         service:'loose-flowers', msg:'Hi! I need daily loose flowers.' },
+  { rank:3,  icon:'🛕', name:'Poola Jada',             desc:'Fresh pooja floral jada',        service:'pooja-jadas',   msg:'Hi! I need a Poola Jada.' },
+  { rank:4,  icon:'💝', name:'Rose Bouquet',           desc:'Top gifting pick',               service:'bouquet',       msg:'Hi! I need a rose bouquet.' },
+  { rank:5,  icon:'💆‍♀️', name:"Moghra Bud's Maala",   desc:'Loved for hair at weddings',     service:'buds-maala',    msg:"Hi! I need a Moghra Bud's Maala." },
+  { rank:6,  icon:'💛', name:'Haldi Marigold Setup',   desc:'Top pick for Haldi events',      service:'haldi-deco',    msg:'Hi! I need Haldi decorations.' },
+  { rank:7,  icon:'🎈', name:'Birthday Room Decor',    desc:'Balloons + flowers combo',       service:'birthday-deco', msg:'Hi! I need birthday decorations.' },
+  { rank:8,  icon:'🚗', name:'Bridal Car Decor',       desc:'Classic white rose theme',       service:'car-deco',      msg:'Hi! I need bridal car decoration.' },
+  { rank:9,  icon:'🏠', name:'Entrance Flower Decor',  desc:'For festivals & functions',      service:'house-deco',    msg:'Hi! I need house entrance decoration.' },
+  { rank:10, icon:'🎉', name:'Wedding Stage Setup',    desc:'Full floral stage decoration',   service:'event-deco',    msg:'Hi! I need wedding stage decoration.' },
+];
+
+function renderMostOrdered() {
+  const grid = document.getElementById('most-ordered-grid');
+  mostOrdered.forEach((item, i) => {
+    const badgeText = i === 0 ? '🔥 #1 Most Ordered' : i < 3 ? `⭐ #${item.rank} Popular` : `#${item.rank}`;
+    const card = document.createElement('div');
+    card.className = 'mo-card';
+    card.onclick = () => openGallery(item.service);
+    card.innerHTML = `
+      <div class="mo-badge">${badgeText}</div>
+      <div class="mo-icon">${item.icon}</div>
+      <div class="mo-name">${item.name}</div>
+      <div class="mo-desc">${item.desc}</div>
+      <a href="https://wa.me/${WA}?text=${encodeURIComponent(item.msg)}" target="_blank" class="mo-order-btn" onclick="event.stopPropagation()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Order Now
+      </a>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── RENDER SERVICE CARDS ──
+function renderServices() {
+  const grid = document.getElementById('services-grid');
+  const list = [
+    {id:'garlands'}, {id:'loose-flowers'}, {id:'bouquet'}, {id:'house-deco'}, {id:'haldi-deco'},
+    {id:'birthday-deco'}, {id:'event-deco'}, {id:'pooja-jadas'}, {id:'buds-maala'},
+    {id:'car-deco'},
+    {id:'custom', custom: true}
+  ];
+  list.forEach(item => {
+    if (item.custom) {
+      grid.innerHTML += `
+        <div class="service-card" style="border:2px dashed rgba(42,122,42,0.28);background:linear-gradient(135deg,rgba(216,243,220,0.35),rgba(255,243,196,0.3));" onclick="window.open('https://wa.me/${WA}?text=Hi!%20I%20have%20a%20custom%20flower%20order%20request.','_blank')">
+          <div class="service-icon">✨</div>
+          <h3>Custom Orders</h3>
+          <p>Have something unique in mind? Tell us your vision and we'll make it bloom — any idea welcome!</p>
+          <div class="service-card-footer"><span class="service-tag">Any Idea Welcome</span></div>
+          <a href="https://wa.me/${WA}?text=Hi!%20I%20have%20a%20custom%20flower%20order%20request." target="_blank" class="order-btn" style="margin-top:10px;" onclick="event.stopPropagation()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat With Us
+          </a>
+        </div>`;
+      return;
+    }
+    const s = services[item.id];
+    grid.innerHTML += `
+      <div class="service-card" onclick="openGallery('${item.id}')">
+        <div class="service-icon">${s.icon}</div>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        <div class="service-card-footer">
+          <span class="service-tag">${s.tag}</span>
+          <button class="view-gallery-btn" onclick="event.stopPropagation();openGallery('${item.id}')">📸 View Photos</button>
+        </div>
+        <a href="https://wa.me/${WA}?text=${encodeURIComponent(s.msg)}" target="_blank" class="order-btn" style="margin-top:10px;" onclick="event.stopPropagation()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Order on WhatsApp
+        </a>
+      </div>`;
+  });
+}
+
+// ── PAGE NAVIGATION ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goHome(sectionId) {
+  showPage('home');
+  setTimeout(() => { const el = document.getElementById(sectionId); if (el) el.scrollIntoView({behavior:'smooth'}); }, 80);
+}
+
+// ── OPEN GALLERY ──
+function openGallery(serviceId) {
+  const s = services[serviceId];
+  if (!s) return;
+  document.getElementById('gallery-title').textContent = s.icon + ' ' + s.title;
+  document.getElementById('gallery-desc').textContent = s.desc;
+  document.getElementById('gallery-wa-btn').href = `https://wa.me/${WA}?text=${encodeURIComponent(s.msg)}`;
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = '';
+  s.slots.forEach((label, i) => {
+    const slot = document.createElement('div');
+    const imgSrc = s.images[i];
+    if (imgSrc) {
+      slot.className = 'gallery-slot';
+      slot.innerHTML = `<img src="${imgSrc}" alt="${label}"><div class="slot-overlay"><span>${label}</span></div>`;
+    } else {
+      slot.className = 'gallery-slot empty';
+      slot.innerHTML = `<div class="slot-icon">${s.icon}</div><div class="slot-label">${label}<br><span style="font-size:0.68rem;opacity:0.55;">Add photo here</span></div>`;
+    }
+    grid.appendChild(slot);
+  });
+  showPage('gallery');
+}
+
+renderMostOrdered();
+renderServices();
+</script>
+</body>
+</html>
